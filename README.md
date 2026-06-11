@@ -2,6 +2,7 @@
 
 An interactive data visualization platform that makes **ChEMBL** and **Open Targets** data accessible to non-experts. Search for drugs, gene targets, or diseases and instantly see bioactivity charts, compound structures, gene-disease association scores, and AI-generated plain-English explanations.
 
+This was developed by Sree Valli Nulu.
 ---
 
 ## Table of Contents
