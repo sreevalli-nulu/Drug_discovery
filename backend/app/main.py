@@ -15,6 +15,9 @@ from app.routers import (
     comparison,
 )
 
+# Import the service modules so we can close their HTTP clients on shutdown
+from app.services import chembl_service, opentargets_service
+
 
 # --------------------------------------------------
 # Lifespan — runs on startup and shutdown
@@ -35,10 +38,13 @@ async def lifespan(app: FastAPI):
     print("✅ API is ready at http://localhost:8000")
     print("📖 Swagger docs at http://localhost:8000/docs")
 
-    yield  # app runs here — everything above is startup, below is shutdown
+    yield  # app runs here
 
     # SHUTDOWN — runs when you stop the server
-    print("🛑 Shutting down — closing database connections...")
+    print("🛑 Shutting down — closing connections...")
+    # Close the lazily-created HTTP clients cleanly
+    await chembl_service.close_client()
+    await opentargets_service.close_client()
     await engine.dispose()
     print("✅ Shutdown complete")
 
@@ -50,35 +56,22 @@ app = FastAPI(
     title="Drug Discovery Dashboard API",
     description="Backend API for exploring ChEMBL and Open Targets data with AI explanations",
     version="1.0.0",
-    docs_url="/docs",           # Swagger UI at /docs
-    redoc_url="/redoc",         # ReDoc UI at /redoc
+    docs_url="/docs",
+    redoc_url="/redoc",
     lifespan=lifespan,
 )
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "http://localhost:5173",  # Vite's default, in case your port changes
-    ],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
 
 # --------------------------------------------------
-# CORS Middleware
+# CORS Middleware  (added once — allows the React frontend in)
 # --------------------------------------------------
-# Allows your React frontend to talk to this backend
 origins = [
     "http://localhost:3000",    # React dev server
-    "http://localhost:5173",    # Vite dev server (if you use Vite)
+    "http://localhost:5173",    # Vite dev server
     "http://127.0.0.1:3000",
     "http://127.0.0.1:5173",
 ]
 
-# In production you would replace above with your actual domain
 if settings.app_env == "production":
     origins = ["https://your-production-domain.com"]
 
@@ -86,17 +79,14 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
     allow_credentials=True,
-    allow_methods=["*"],        # GET, POST, PUT, DELETE etc.
-    allow_headers=["*"],        # Authorization, Content-Type etc.
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 
 # --------------------------------------------------
 # Register all routers
 # --------------------------------------------------
-# Each router handles a group of related endpoints
-# All endpoints are prefixed with /api
-
 app.include_router(search.router,     prefix="/api/search",     tags=["Search"])
 app.include_router(compounds.router,  prefix="/api/compounds",  tags=["Compounds"])
 app.include_router(targets.router,    prefix="/api/targets",    tags=["Targets"])
@@ -107,7 +97,7 @@ app.include_router(comparison.router, prefix="/api/comparison", tags=["Compariso
 
 
 # --------------------------------------------------
-# Root health check endpoint
+# Health endpoints
 # --------------------------------------------------
 @app.get("/", tags=["Health"])
 async def root():

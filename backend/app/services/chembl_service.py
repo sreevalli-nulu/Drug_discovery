@@ -16,21 +16,42 @@ from app.schemas.target import (
 # Base URL for all ChEMBL API calls
 CHEMBL_BASE_URL = "https://www.ebi.ac.uk/chembl/api/data"
 
-# Shared async HTTP client — reused across all calls (more efficient)
-client = httpx.AsyncClient(
-    base_url=CHEMBL_BASE_URL,
-    headers={"Accept": "application/json"},
-    timeout=30.0,
-)
+# --------------------------------------------------
+# LAZY CLIENT
+# Do NOT create the AsyncClient at import time. Under uvicorn --reload
+# on Windows, an import-time client binds to the wrong event loop and
+# every request deadlocks. Instead we create it on first use, inside a
+# running request, so it always attaches to the correct loop.
+# --------------------------------------------------
+_client: httpx.AsyncClient | None = None
+
+
+def get_client() -> httpx.AsyncClient:
+    global _client
+    if _client is None:
+        _client = httpx.AsyncClient(
+            base_url=CHEMBL_BASE_URL,
+            headers={"Accept": "application/json"},
+            timeout=httpx.Timeout(13.0, connect=5.0),
+        )
+    return _client
+
+
+async def close_client() -> None:
+    """Called from FastAPI shutdown to close the client cleanly."""
+    global _client
+    if _client is not None:
+        await _client.aclose()
+        _client = None
 
 
 # --------------------------------------------------
-# HELPER — Retry decorator
+# HELPER — Retry decorator (profile/detail endpoints only)
 # --------------------------------------------------
 def chembl_retry(func):
     return retry(
-        stop=stop_after_attempt(3),
-        wait=wait_exponential(multiplier=1, min=1, max=4),
+        stop=stop_after_attempt(2),
+        wait=wait_exponential(multiplier=1, min=1, max=3),
         reraise=True,
     )(func)
 
@@ -56,44 +77,24 @@ def get_approval_status(max_phase: int | None) -> str:
 # HELPER — Fetch SMILES directly from ChEMBL
 # --------------------------------------------------
 async def fetch_smiles(chembl_id: str) -> str | None:
-    """
-    Fetches SMILES string directly from ChEMBL molecule endpoint.
-    Used as fallback when SMILES is missing from cached profile.
-    """
     try:
-        response = await client.get(
-            f"/molecule/{chembl_id}",
-            params={"format": "json"},
-        )
+        response = await get_client().get(f"/molecule/{chembl_id}", params={"format": "json"})
         if response.status_code != 200:
             return None
         data = response.json()
         structures = data.get("molecule_structures") or {}
-        return (
-            structures.get("canonical_smiles")
-            or structures.get("standard_inchi")
-            or None
-        )
+        return structures.get("canonical_smiles") or structures.get("standard_inchi") or None
     except Exception:
         return None
 
 
 # ==================================================
-# COMPOUND SEARCH
+# COMPOUND SEARCH  (no retry — called via safe_search)
 # ==================================================
-@chembl_retry
 async def search_compounds(query: str, limit: int = 20) -> list[CompoundSearchResult]:
-    """
-    Search ChEMBL for compounds by name or ChEMBL ID.
-    Returns a list of matching compounds with basic info.
-    """
-    response = await client.get(
+    response = await get_client().get(
         "/molecule",
-        params={
-            "pref_name__icontains": query,
-            "limit": limit,
-            "format": "json",
-        },
+        params={"pref_name__icontains": query, "limit": limit, "format": "json"},
     )
     response.raise_for_status()
     data = response.json()
@@ -119,14 +120,7 @@ async def search_compounds(query: str, limit: int = 20) -> list[CompoundSearchRe
 # ==================================================
 @chembl_retry
 async def get_compound_profile(chembl_id: str) -> CompoundProfile | None:
-    """
-    Fetch full details of a single compound by ChEMBL ID.
-    Returns all physicochemical properties for the profile page.
-    """
-    response = await client.get(
-        f"/molecule/{chembl_id}",
-        params={"format": "json"},
-    )
+    response = await get_client().get(f"/molecule/{chembl_id}", params={"format": "json"})
 
     if response.status_code == 404:
         return None
@@ -135,13 +129,8 @@ async def get_compound_profile(chembl_id: str) -> CompoundProfile | None:
     molecule = response.json()
     props = molecule.get("molecule_properties") or {}
 
-    # Robust SMILES extraction — try multiple fields
     structures = molecule.get("molecule_structures") or {}
-    smiles = (
-        structures.get("canonical_smiles")
-        or structures.get("molfile")
-        or None
-    )
+    smiles = structures.get("canonical_smiles") or structures.get("molfile") or None
 
     return CompoundProfile(
         chembl_id=molecule.get("molecule_chembl_id", ""),
@@ -163,20 +152,10 @@ async def get_compound_profile(chembl_id: str) -> CompoundProfile | None:
 # BIOACTIVITY DATA
 # ==================================================
 @chembl_retry
-async def get_compound_activities(
-    chembl_id: str, limit: int = 100
-) -> BioactivityResponse:
-    """
-    Fetch all bioactivity measurements for a compound.
-    Returns IC50, Ki, EC50 values across all targets.
-    """
-    response = await client.get(
+async def get_compound_activities(chembl_id: str, limit: int = 100) -> BioactivityResponse:
+    response = await get_client().get(
         "/activity",
-        params={
-            "molecule_chembl_id": chembl_id,
-            "limit": limit,
-            "format": "json",
-        },
+        params={"molecule_chembl_id": chembl_id, "limit": limit, "format": "json"},
     )
     response.raise_for_status()
     data = response.json()
@@ -217,21 +196,12 @@ async def get_compound_activities(
 
 
 # ==================================================
-# TARGET SEARCH
+# TARGET SEARCH  (no retry — called via safe_search)
 # ==================================================
-@chembl_retry
 async def search_targets(query: str, limit: int = 20) -> list[TargetSearchResult]:
-    """
-    Search ChEMBL for targets by protein name or gene symbol.
-    Returns a list of matching targets.
-    """
-    response = await client.get(
+    response = await get_client().get(
         "/target",
-        params={
-            "pref_name__icontains": query,
-            "limit": limit,
-            "format": "json",
-        },
+        params={"pref_name__icontains": query, "limit": limit, "format": "json"},
     )
     response.raise_for_status()
     data = response.json()
@@ -264,13 +234,7 @@ async def search_targets(query: str, limit: int = 20) -> list[TargetSearchResult
 # ==================================================
 @chembl_retry
 async def get_target_profile(target_chembl_id: str) -> TargetProfile | None:
-    """
-    Fetch full details of a single target by ChEMBL target ID.
-    """
-    response = await client.get(
-        f"/target/{target_chembl_id}",
-        params={"format": "json"},
-    )
+    response = await get_client().get(f"/target/{target_chembl_id}", params={"format": "json"})
 
     if response.status_code == 404:
         return None
@@ -305,25 +269,16 @@ async def get_target_profile(target_chembl_id: str) -> TargetProfile | None:
 # TARGET LIGANDS
 # ==================================================
 @chembl_retry
-async def get_target_ligands(
-    target_chembl_id: str, limit: int = 50
-) -> LigandsResponse:
-    """
-    Fetch all compounds (ligands) known to hit a specific target.
-    """
-    response = await client.get(
+async def get_target_ligands(target_chembl_id: str, limit: int = 50) -> LigandsResponse:
+    response = await get_client().get(
         "/activity",
-        params={
-            "target_chembl_id": target_chembl_id,
-            "limit": limit,
-            "format": "json",
-        },
+        params={"target_chembl_id": target_chembl_id, "limit": limit, "format": "json"},
     )
     response.raise_for_status()
     data = response.json()
 
     ligands = []
-    seen_ids = set()
+    seen_ids: set[str] = set()
 
     for activity in data.get("activities", []):
         chembl_id = activity.get("molecule_chembl_id")

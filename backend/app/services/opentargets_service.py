@@ -11,20 +11,37 @@ from app.schemas.disease import (
 # Open Targets GraphQL endpoint
 OPENTARGETS_URL = "https://api.platform.opentargets.org/api/v4/graphql"
 
-# Shared async HTTP client
-client = httpx.AsyncClient(
-    headers={"Content-Type": "application/json"},
-    timeout=30.0,
-)
+# --------------------------------------------------
+# LAZY CLIENT  (see chembl_service.py for why import-time creation
+# breaks under uvicorn --reload on Windows)
+# --------------------------------------------------
+_client: httpx.AsyncClient | None = None
+
+
+def get_client() -> httpx.AsyncClient:
+    global _client
+    if _client is None:
+        _client = httpx.AsyncClient(
+            headers={"Content-Type": "application/json"},
+            timeout=httpx.Timeout(8.0, connect=3.0),
+        )
+    return _client
+
+
+async def close_client() -> None:
+    global _client
+    if _client is not None:
+        await _client.aclose()
+        _client = None
 
 
 # --------------------------------------------------
-# HELPER — Retry decorator (same pattern as ChEMBL)
+# HELPER — Retry decorator (profile/detail endpoints only)
 # --------------------------------------------------
 def opentargets_retry(func):
     return retry(
-        stop=stop_after_attempt(3),
-        wait=wait_exponential(multiplier=1, min=1, max=4),
+        stop=stop_after_attempt(2),
+        wait=wait_exponential(multiplier=1, min=1, max=3),
         reraise=True,
     )(func)
 
@@ -32,19 +49,15 @@ def opentargets_retry(func):
 # --------------------------------------------------
 # HELPER — Execute a GraphQL query
 # --------------------------------------------------
-async def run_query(query: str, variables: dict) -> dict:
-    """
-    Sends a GraphQL query to Open Targets and returns the response data.
-    All service functions use this helper internally.
-    """
-    response = await client.post(
-        OPENTARGETS_URL,
-        json={"query": query, "variables": variables},
-    )
+async def run_query(query: str, variables: dict, timeout: float | None = None) -> dict:
+    kwargs: dict = {"json": {"query": query, "variables": variables}}
+    if timeout is not None:
+        kwargs["timeout"] = httpx.Timeout(timeout, connect=3.0)
+
+    response = await get_client().post(OPENTARGETS_URL, **kwargs)
     response.raise_for_status()
     result = response.json()
 
-    # GraphQL returns errors inside the response body (not as HTTP errors)
     if "errors" in result:
         error_messages = [e.get("message", "Unknown error") for e in result["errors"]]
         raise ValueError(f"GraphQL errors: {'; '.join(error_messages)}")
@@ -53,15 +66,9 @@ async def run_query(query: str, variables: dict) -> dict:
 
 
 # ==================================================
-# DISEASE SEARCH
+# DISEASE SEARCH  (no retry — called via safe_search)
 # ==================================================
-@opentargets_retry
 async def search_diseases(query: str, limit: int = 20) -> list[DiseaseSearchResult]:
-    """
-    Search Open Targets for diseases by name.
-    Returns a list of matching diseases with EFO IDs.
-    """
-    # GraphQL query — asks for exactly the fields we need
     gql_query = """
     query SearchDiseases($query: String!, $size: Int!) {
         search(queryString: $query, entityNames: ["disease"], page: {size: $size, index: 0}) {
@@ -75,12 +82,11 @@ async def search_diseases(query: str, limit: int = 20) -> list[DiseaseSearchResu
     }
     """
 
-    data = await run_query(gql_query, {"query": query, "size": limit})
+    data = await run_query(gql_query, {"query": query, "size": limit}, timeout=5.0)
     hits = data.get("search", {}).get("hits", [])
 
     results = []
     for hit in hits:
-        # Only include disease results (search can return targets too)
         if hit.get("entity") == "disease":
             results.append(
                 DiseaseSearchResult(
@@ -98,10 +104,6 @@ async def search_diseases(query: str, limit: int = 20) -> list[DiseaseSearchResu
 # ==================================================
 @opentargets_retry
 async def get_disease_profile(efo_id: str) -> DiseaseProfile | None:
-    """
-    Fetch full details of a single disease by EFO ID.
-    Returns description, synonyms, and ontology hierarchy.
-    """
     gql_query = """
     query DiseaseProfile($efoId: String!) {
         disease(efoId: $efoId) {
@@ -117,19 +119,16 @@ async def get_disease_profile(efo_id: str) -> DiseaseProfile | None:
     }
     """
 
-
     data = await run_query(gql_query, {"efoId": efo_id})
     disease = data.get("disease")
 
     if not disease:
         return None
 
-    # Extract synonyms list safely
     synonyms = []
     syn_data = disease.get("synonyms")
     if syn_data:
         if isinstance(syn_data, list):
-            # API returns list of DiseaseSynonyms objects
             for syn_obj in syn_data:
                 terms = syn_obj.get("terms", [])
                 synonyms.extend(terms)
@@ -137,9 +136,6 @@ async def get_disease_profile(efo_id: str) -> DiseaseProfile | None:
         elif isinstance(syn_data, dict):
             synonyms = syn_data.get("terms", [])[:10]
 
-    # limit to 10 synonyms
-
-    # Ancestors give us the ontology hierarchy (breadcrumb)
     ancestors = disease.get("ancestors") or []
 
     return DiseaseProfile(
@@ -155,14 +151,7 @@ async def get_disease_profile(efo_id: str) -> DiseaseProfile | None:
 # GENE - DISEASE ASSOCIATIONS
 # ==================================================
 @opentargets_retry
-async def get_disease_associations(
-    efo_id: str, limit: int = 50
-) -> GeneAssociationsResponse:
-    """
-    Fetch all genes associated with a disease ranked by score.
-    This is the core Open Targets feature — gene-disease evidence scores.
-    Powers the Genes tab and Evidence Heatmap on the Disease Profile page.
-    """
+async def get_disease_associations(efo_id: str, limit: int = 50) -> GeneAssociationsResponse:
     gql_query = """
     query DiseaseAssociations($efoId: String!, $size: Int!) {
         disease(efoId: $efoId) {
@@ -196,8 +185,6 @@ async def get_disease_associations(
     for row in rows:
         target = row.get("target", {})
 
-        # Parse individual evidence type scores
-        # Each datatype has an id and score
         datatype_scores = {
             ds["id"]: ds["score"]
             for ds in row.get("datatypeScores", [])
@@ -226,15 +213,6 @@ async def get_disease_associations(
 
 
 def parse_clinical_stage(stage: str) -> tuple[int, str]:
-    """
-    Converts Open Targets clinical stage strings to phase number and status label.
-    Examples:
-        "APPROVAL"  → (4, "Approved")
-        "PHASE_3"   → (3, "Phase 3")
-        "PHASE_2"   → (2, "Phase 2")
-        "PHASE_1"   → (1, "Phase 1")
-        "UNKNOWN"   → (0, "Preclinical")
-    """
     stage = (stage or "").upper().strip()
 
     if stage == "APPROVAL":
@@ -249,15 +227,13 @@ def parse_clinical_stage(stage: str) -> tuple[int, str]:
         return 1, "Phase 1"
     else:
         return 0, "Preclinical"
+
+
 # ==================================================
 # DRUG PIPELINE FOR A DISEASE
 # ==================================================
 @opentargets_retry
 async def get_disease_drug_pipeline(efo_id: str) -> list[DrugPipelineEntry]:
-    """
-    Fetch all drugs linked to a disease — approved, clinical, and preclinical.
-    Uses the updated drugAndClinicalCandidates field (API v4 current).
-    """
     gql_query = """
     query DiseaseDrugs($efoId: String!) {
         disease(efoId: $efoId) {
@@ -283,7 +259,7 @@ async def get_disease_drug_pipeline(efo_id: str) -> list[DrugPipelineEntry]:
     rows = candidates.get("rows", [])
 
     pipeline = []
-    seen_ids = set()
+    seen_ids: set[str] = set()
 
     for row in rows:
         drug = row.get("drug", {})
@@ -293,8 +269,6 @@ async def get_disease_drug_pipeline(efo_id: str) -> list[DrugPipelineEntry]:
             continue
         seen_ids.add(drug_id)
 
-        # Convert stage string to phase number
-        # maximumClinicalStage returns strings like "APPROVAL", "PHASE_3" etc.
         stage = drug.get("maximumClinicalStage") or row.get("maxClinicalStage", "")
         max_phase, approval_status = parse_clinical_stage(stage)
 
@@ -308,7 +282,6 @@ async def get_disease_drug_pipeline(efo_id: str) -> list[DrugPipelineEntry]:
             )
         )
 
-    # Sort — approved first, then by phase descending
     pipeline.sort(key=lambda x: x.max_phase or 0, reverse=True)
     return pipeline
 
@@ -317,13 +290,7 @@ async def get_disease_drug_pipeline(efo_id: str) -> list[DrugPipelineEntry]:
 # TARGET DISEASE ASSOCIATIONS
 # ==================================================
 @opentargets_retry
-async def get_target_disease_associations(
-    ensembl_id: str, limit: int = 20
-) -> list[dict]:
-    """
-    Fetch diseases associated with a specific gene/target.
-    Used in the Target Profile page — Disease Associations bar chart.
-    """
+async def get_target_disease_associations(ensembl_id: str, limit: int = 20) -> list[dict]:
     gql_query = """
     query TargetDiseases($ensemblId: String!, $size: Int!) {
         target(ensemblId: $ensemblId) {
@@ -348,7 +315,6 @@ async def get_target_disease_associations(
     associated = target_data.get("associatedDiseases", {})
     rows = associated.get("rows", [])
 
-    # Return as plain dicts — simple enough without a dedicated schema
     results = []
     for row in rows:
         disease = row.get("disease", {})
