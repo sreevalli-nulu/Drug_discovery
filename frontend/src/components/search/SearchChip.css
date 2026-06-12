@@ -1,0 +1,61 @@
+.search-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-card);
+  color: var(--color-text-secondary);
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease,
+    transform 0.15s ease;
+}
+
+.search-chip:hover {
+  transform: translateY(-1px);
+  background: var(--color-bg-elevated);
+  color: var(--color-text-primary);
+}
+
+.search-chip:focus-visible {
+  outline: 2px solid var(--color-cyan);
+  outline-offset: 2px;
+}
+
+.search-chip__count {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border);
+}
+
+/* Accent borders by entity type — fill stays subtle until hover */
+.search-chip--compound:hover {
+  border-color: color-mix(in srgb, var(--color-cyan) 50%, var(--color-border));
+  color: var(--color-cyan);
+}
+
+.search-chip--target:hover {
+  border-color: color-mix(in srgb, var(--color-green) 50%, var(--color-border));
+  color: var(--color-green);
+}
+
+.search-chip--disease:hover {
+  border-color: color-mix(in srgb, var(--color-yellow) 50%, var(--color-border));
+  color: var(--color-yellow);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .search-chip {
+    transition: none;
+  }
+  .search-chip:hover {
+    transform: none;
+  }
+}
