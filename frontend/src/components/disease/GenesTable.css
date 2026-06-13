@@ -1,0 +1,114 @@
+.genes-table__wrapper {
+  overflow-x: auto;
+}
+
+.genes-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.genes-table thead tr {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.genes-table th {
+  text-align: left;
+  padding: 10px 12px;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.genes-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: middle;
+}
+
+.genes-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.genes-table__row {
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.genes-table__row:hover {
+  background: var(--color-bg-elevated);
+}
+
+.genes-table__row:hover .genes-table__symbol {
+  color: var(--color-cyan);
+}
+
+.genes-table__gene {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.genes-table__symbol {
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  transition: color 0.15s ease;
+}
+
+.genes-table__gene-name {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.genes-table__score-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 90px;
+}
+
+.genes-table__score-bar-wrap {
+  flex: 1;
+  height: 6px;
+  background: var(--color-bg-elevated);
+  border-radius: 999px;
+  overflow: hidden;
+  min-width: 40px;
+}
+
+.genes-table__score-bar {
+  height: 100%;
+  border-radius: 999px;
+  min-width: 2px;
+}
+
+.genes-table__score-num {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 600;
+  white-space: nowrap;
+  min-width: 32px;
+  text-align: right;
+}
+
+.genes-table__muted {
+  color: var(--color-text-secondary);
+  opacity: 0.4;
+}
+
+@media (max-width: 768px) {
+  .genes-table__th--hide-sm,
+  .genes-table__td--hide-sm {
+    display: none;
+  }
+}

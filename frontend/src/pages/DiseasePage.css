@@ -1,0 +1,130 @@
+.disease-page {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 0 64px 0;
+}
+
+.disease-page__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  color: var(--color-text-secondary);
+  font-size: 0.85rem;
+  font-family: var(--font-display);
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 20px;
+  transition: color 0.15s ease;
+}
+
+.disease-page__back:hover { color: var(--color-yellow); }
+
+.disease-page__info-card,
+.disease-page__genes-card,
+.disease-page__drugs-card {
+  margin-bottom: 16px;
+}
+
+.disease-page__description {
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+  line-height: 1.65;
+  margin-bottom: 20px;
+}
+
+.disease-page__synonyms {
+  margin-bottom: 20px;
+}
+
+.disease-page__synonyms-label,
+.disease-page__summary-label {
+  display: block;
+  font-size: 0.78rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 10px;
+}
+
+.disease-page__synonym-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.disease-page__pipeline-summary {
+  border-top: 1px solid var(--color-border);
+  padding-top: 16px;
+}
+
+.disease-page__summary-chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.disease-page__summary-chip {
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 999px;
+  border: 1px solid;
+}
+
+.disease-page__summary-chip--approved {
+  color: var(--color-green);
+  border-color: color-mix(in srgb, var(--color-green) 35%, transparent);
+  background: color-mix(in srgb, var(--color-green) 10%, transparent);
+}
+
+.disease-page__summary-chip--phase3 {
+  color: var(--color-yellow);
+  border-color: color-mix(in srgb, var(--color-yellow) 35%, transparent);
+  background: color-mix(in srgb, var(--color-yellow) 10%, transparent);
+}
+
+.disease-page__summary-chip--phase2,
+.disease-page__summary-chip--phase1 {
+  color: var(--color-text-secondary);
+  border-color: var(--color-border);
+  background: transparent;
+}
+
+/* Skeleton */
+.disease-page__loading {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.disease-page__skeleton {
+  background: var(--color-bg-elevated);
+  border-radius: 12px;
+  animation: shimmer 1.5s infinite;
+}
+
+.disease-page__skeleton--header { height: 100px; }
+.disease-page__skeleton--card   { height: 200px; }
+.disease-page__skeleton--chart  { height: 300px; }
+
+@keyframes shimmer {
+  0%   { opacity: 0.5; }
+  50%  { opacity: 1; }
+  100% { opacity: 0.5; }
+}
+
+.disease-page__back-btn {
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-primary);
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+}
