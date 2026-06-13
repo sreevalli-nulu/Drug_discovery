@@ -1,0 +1,131 @@
+.compound-page {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 0 64px 0;
+}
+
+.compound-page__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  color: var(--color-text-secondary);
+  font-size: 0.85rem;
+  font-family: var(--font-display);
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 20px;
+  transition: color 0.15s ease;
+}
+
+.compound-page__back:hover {
+  color: var(--color-cyan);
+}
+
+.compound-page__overview {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.compound-page__chart-card,
+.compound-page__targets-card {
+  margin-bottom: 16px;
+}
+
+.compound-page__props {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* Skeleton loading states */
+.compound-page__loading {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.compound-page__skeleton-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.compound-page__skeleton {
+  background: var(--color-bg-elevated);
+  border-radius: 12px;
+  animation: shimmer 1.5s infinite;
+}
+
+.compound-page__skeleton--header { height: 100px; }
+.compound-page__skeleton--card   { height: 240px; }
+.compound-page__skeleton--chart  { height: 300px; }
+
+@keyframes shimmer {
+  0%   { opacity: 0.5; }
+  50%  { opacity: 1; }
+  100% { opacity: 0.5; }
+}
+
+/* PropRow */
+.prop-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.prop-row:last-child {
+  border-bottom: none;
+}
+
+.prop-row__label {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+}
+
+.prop-row__value {
+  font-size: 0.9rem;
+  color: var(--color-text-primary);
+  font-weight: 500;
+}
+
+.prop-row__value--mono {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+}
+
+.compound-page__back-btn {
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-primary);
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+}
+
+@media (max-width: 640px) {
+  .compound-page__overview {
+    grid-template-columns: 1fr;
+  }
+}
+
+.compound-page__structure {
+  display: flex;
+  justify-content: center;
+  padding: 16px;
+  background: white;
+  border-radius: 8px;
+}
+
+.compound-page__structure-img {
+  max-width: 300px;
+  width: 100%;
+  height: auto;
+}

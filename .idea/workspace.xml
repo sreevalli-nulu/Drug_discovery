@@ -4,25 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f9831d83-bbb9-44d8-9dfc-d0ecb4ba6a45" name="Changes" comment="Home page has been created.">
-      <change afterPath="$PROJECT_DIR$/backend/test_minimal.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/common/ScrollToTop.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/search/ResultCard.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/pages/SearchResultsPage.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/drug_discovery.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/drug_discovery.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="f9831d83-bbb9-44d8-9dfc-d0ecb4ba6a45" name="Changes" comment="add search results page with tabbed compound/target/disease results">
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/compound/ActivityChart.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/compound/ActivityChart.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/compound/LipinskiPanel.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/compound/TargetsTable.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/compound/TargetsTable.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/pages/CompoundPage.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/routers/search.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/routers/search.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/services/chembl_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/services/chembl_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app/services/opentargets_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/services/opentargets_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/common/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/common/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/search/CompoundResults.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/search/CompoundResults.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/search/DiseaseResults.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/search/DiseaseResults.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/search/TargetResults.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/search/TargetResults.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/HomePage.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/HomePage.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/SearchResultsPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/SearchResultsPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/CompoundPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/CompoundPage.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -107,7 +97,7 @@
       <workItem from="1780310104629" duration="25389000" />
       <workItem from="1781158799799" duration="7768000" />
       <workItem from="1781249472682" duration="5012000" />
-      <workItem from="1781256538136" duration="9709000" />
+      <workItem from="1781256538136" duration="11881000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <option name="closed" value="true" />
@@ -141,7 +131,15 @@
       <option name="project" value="LOCAL" />
       <updated>1781253290584</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="add search results page with tabbed compound/target/disease results">
+      <option name="closed" value="true" />
+      <created>1781288019033</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1781288019033</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -151,7 +149,8 @@
     <MESSAGE value="initial commit" />
     <MESSAGE value="added readme.md" />
     <MESSAGE value="Home page has been created" />
-    <option name="LAST_COMMIT_MESSAGE" value="Home page has been created" />
+    <MESSAGE value="add search results page with tabbed compound/target/disease results" />
+    <option name="LAST_COMMIT_MESSAGE" value="add search results page with tabbed compound/target/disease results" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
