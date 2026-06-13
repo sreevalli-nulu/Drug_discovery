@@ -1,0 +1,112 @@
+.target-page {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 0 64px 0;
+}
+
+.target-page__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  color: var(--color-text-secondary);
+  font-size: 0.85rem;
+  font-family: var(--font-display);
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 20px;
+  transition: color 0.15s ease;
+}
+
+.target-page__back:hover { color: var(--color-cyan); }
+
+.target-page__header-badges {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.target-page__info-card,
+.target-page__ligands-card,
+.target-page__diseases-card {
+  margin-bottom: 16px;
+}
+
+.target-page__props {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.target-page__uniprot-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-cyan);
+  text-decoration: none;
+  transition: opacity 0.15s ease;
+}
+
+.target-page__uniprot-link:hover { opacity: 0.8; }
+
+/* Skeleton */
+.target-page__loading {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.target-page__skeleton {
+  background: var(--color-bg-elevated);
+  border-radius: 12px;
+  animation: shimmer 1.5s infinite;
+}
+
+.target-page__skeleton--header { height: 100px; }
+.target-page__skeleton--card   { height: 200px; }
+.target-page__skeleton--chart  { height: 300px; }
+
+@keyframes shimmer {
+  0%   { opacity: 0.5; }
+  50%  { opacity: 1; }
+  100% { opacity: 0.5; }
+}
+
+/* Shared PropRow styles (same as CompoundPage) */
+.prop-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.prop-row:last-child { border-bottom: none; }
+
+.prop-row__label {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+}
+
+.prop-row__value {
+  font-size: 0.9rem;
+  color: var(--color-text-primary);
+  font-weight: 500;
+}
+
+.prop-row__value--mono {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+}
+
+.target-page__back-btn {
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-primary);
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+}

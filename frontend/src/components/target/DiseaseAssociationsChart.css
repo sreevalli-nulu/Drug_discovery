@@ -1,0 +1,83 @@
+.disease-assoc__list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.disease-assoc__row {
+  display: grid;
+  grid-template-columns: 260px 1fr 60px;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 4px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.disease-assoc__row:hover {
+  background: var(--color-bg-elevated);
+}
+
+.disease-assoc__row:hover .disease-assoc__name {
+  color: var(--color-cyan);
+}
+
+.disease-assoc__label {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.disease-assoc__name {
+  font-size: 0.875rem;
+  color: var(--color-text-primary);
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color 0.15s ease;
+}
+
+.disease-assoc__id {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--color-text-secondary);
+  opacity: 0.7;
+}
+
+.disease-assoc__bar-wrap {
+  height: 8px;
+  background: var(--color-bg-elevated);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.disease-assoc__bar {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.4s ease;
+  min-width: 4px;
+}
+
+.disease-assoc__score {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-align: right;
+}
+
+.disease-assoc__legend {
+  font-size: 0.78rem;
+  color: var(--color-text-secondary);
+  margin-top: 16px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+@media (max-width: 640px) {
+  .disease-assoc__row {
+    grid-template-columns: 1fr 80px 48px;
+  }
+}
