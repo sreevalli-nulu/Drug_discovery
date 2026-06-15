@@ -1,0 +1,105 @@
+.comparison-table__wrapper {
+  overflow-x: auto;
+}
+
+.comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.comparison-table thead tr {
+  border-bottom: 2px solid var(--color-border);
+}
+
+.comparison-table th {
+  padding: 12px 16px;
+  text-align: left;
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+}
+
+.comparison-table__prop-col {
+  width: 200px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.comparison-table__compound-col {
+  min-width: 160px;
+}
+
+.comparison-table__compound-btn {
+  display: block;
+  background: none;
+  border: none;
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
+  transition: opacity 0.15s ease;
+  line-height: 1.2;
+}
+
+.comparison-table__compound-btn:hover {
+  opacity: 0.8;
+}
+
+.comparison-table__chembl-id {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--color-text-secondary);
+  margin-top: 2px;
+}
+
+.comparison-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: middle;
+}
+
+.comparison-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.comparison-table tbody tr:hover {
+  background: var(--color-bg-elevated);
+}
+
+.comparison-table__label {
+  color: var(--color-text-secondary);
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.comparison-table__limit {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+}
+
+.comparison-table__value {
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  color: var(--color-text-primary);
+  font-weight: 500;
+}
+
+.comparison-table__value--best {
+  font-weight: 700;
+}
+
+.comparison-table__value--over {
+  color: var(--color-yellow) !important;
+}

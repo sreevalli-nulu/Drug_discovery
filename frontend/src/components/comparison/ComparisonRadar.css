@@ -1,0 +1,11 @@
+.comparison-radar {
+  width: 100%;
+}
+
+.comparison-radar__note {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+  text-align: center;
+  margin-top: 8px;
+  line-height: 1.5;
+}
