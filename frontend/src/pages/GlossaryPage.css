@@ -1,0 +1,192 @@
+.glossary-page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 0 64px 0;
+}
+
+.glossary-page__header {
+  margin-bottom: 28px;
+}
+
+.glossary-page__title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin: 0 0 8px 0;
+}
+
+.glossary-page__title svg {
+  color: var(--color-cyan);
+}
+
+.glossary-page__subtitle {
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+/* Search bar */
+.glossary-page__search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.glossary-page__search-icon {
+  position: absolute;
+  left: 14px;
+  color: var(--color-text-secondary);
+  pointer-events: none;
+}
+
+.glossary-page__search-input {
+  width: 100%;
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 12px 40px 12px 42px;
+  color: var(--color-text-primary);
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.glossary-page__search-input:focus {
+  border-color: var(--color-cyan);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-cyan) 12%, transparent);
+}
+
+.glossary-page__search-input::placeholder {
+  color: var(--color-text-secondary);
+  opacity: 0.6;
+}
+
+.glossary-page__clear {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  transition: color 0.15s ease;
+}
+
+.glossary-page__clear:hover {
+  color: var(--color-text-primary);
+}
+
+.glossary-page__count {
+  font-size: 0.82rem;
+  color: var(--color-text-secondary);
+  margin: 0 0 16px 0;
+  font-family: var(--font-display);
+}
+
+/* Empty state */
+.glossary-page__empty {
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--color-text-secondary);
+}
+
+.glossary-page__empty p {
+  margin: 0 0 16px 0;
+  font-size: 0.95rem;
+}
+
+.glossary-page__reset {
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-primary);
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  transition: border-color 0.15s ease;
+}
+
+.glossary-page__reset:hover {
+  border-color: var(--color-cyan);
+  color: var(--color-cyan);
+}
+
+/* Groups and dividers */
+.glossary-page__groups {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.glossary-page__divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.glossary-page__letter {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-cyan);
+  flex-shrink: 0;
+}
+
+.glossary-page__divider-line {
+  flex: 1;
+  height: 1px;
+  background: var(--color-border);
+}
+
+/* Term cards */
+.glossary-page__terms {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.glossary-card {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 16px 20px;
+  transition: border-color 0.15s ease;
+}
+
+.glossary-card:hover {
+  border-color: color-mix(in srgb, var(--color-cyan) 30%, var(--color-border));
+}
+
+.glossary-card__term {
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-cyan);
+  margin-bottom: 6px;
+}
+
+.glossary-card__definition {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Search highlight */
+.glossary__highlight {
+  background: color-mix(in srgb, var(--color-cyan) 25%, transparent);
+  color: var(--color-text-primary);
+  border-radius: 2px;
+  padding: 0 2px;
+}
