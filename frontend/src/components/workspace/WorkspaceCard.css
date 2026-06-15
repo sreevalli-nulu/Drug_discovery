@@ -1,0 +1,174 @@
+.workspace-card {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 16px;
+  transition: border-color 0.15s ease;
+}
+
+.workspace-card:hover {
+  border-color: color-mix(in srgb, var(--color-cyan) 30%, var(--color-border));
+}
+
+.workspace-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.workspace-card__info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.workspace-card__id {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+}
+
+.workspace-card__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.workspace-card__date {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+}
+
+.workspace-card__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
+  background: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  color: var(--color-text-secondary);
+}
+
+.workspace-card__btn--view:hover {
+  color: var(--color-cyan);
+  border-color: color-mix(in srgb, var(--color-cyan) 40%, var(--color-border));
+}
+
+.workspace-card__btn--delete:hover {
+  color: var(--color-red, #FF4757);
+  border-color: color-mix(in srgb, var(--color-red, #FF4757) 40%, var(--color-border));
+}
+
+.workspace-card__btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.workspace-card__name {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0 0 12px 0;
+  cursor: pointer;
+  transition: color 0.15s ease;
+  line-height: 1.3;
+}
+
+.workspace-card__name:hover {
+  color: var(--color-cyan);
+}
+
+/* Notes */
+.workspace-card__notes-trigger {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 7px;
+  background: none;
+  border: 1px dashed var(--color-border);
+  border-radius: 8px;
+  padding: 8px 12px;
+  width: 100%;
+  text-align: left;
+  color: var(--color-text-secondary);
+  font-size: 0.82rem;
+  font-family: var(--font-body, 'Inter', sans-serif);
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+  line-height: 1.5;
+}
+
+.workspace-card__notes-trigger:hover {
+  border-color: var(--color-cyan);
+  color: var(--color-text-primary);
+}
+
+.workspace-card__textarea {
+  width: 100%;
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: var(--color-text-primary);
+  font-family: var(--font-body, 'Inter', sans-serif);
+  font-size: 0.85rem;
+  line-height: 1.55;
+  resize: vertical;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.workspace-card__textarea:focus {
+  border-color: var(--color-cyan);
+}
+
+.workspace-card__notes-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.workspace-card__notes-btn {
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid var(--color-border);
+  transition: all 0.15s ease;
+}
+
+.workspace-card__notes-btn--cancel {
+  background: none;
+  color: var(--color-text-secondary);
+}
+
+.workspace-card__notes-btn--cancel:hover {
+  color: var(--color-text-primary);
+}
+
+.workspace-card__notes-btn--save {
+  background: var(--color-cyan);
+  color: var(--color-bg-primary);
+  border-color: var(--color-cyan);
+}
+
+.workspace-card__notes-btn--save:hover:not(:disabled) {
+  filter: brightness(1.1);
+}
+
+.workspace-card__notes-btn--save:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

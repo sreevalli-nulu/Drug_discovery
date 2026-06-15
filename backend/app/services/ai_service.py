@@ -20,6 +20,7 @@ AI_DISABLED_MESSAGE = (
 def build_prompt(
     entity_type: str,
     entity_id: str,
+    entity_name: str,
     question_type: str,
     context: dict | None = None,
 ) -> str:
@@ -36,7 +37,7 @@ def build_prompt(
         return f"""You are a medicinal chemistry expert explaining drug mechanisms 
 to a non-expert audience.
 
-Explain the mechanism of action of the drug or compound with ID {entity_id} 
+Explain the mechanism of action of {entity_name} (ChEMBL ID: {entity_id})
 in simple, clear English. Cover:
 1. What biological target does it act on?
 2. How does it interact with that target (inhibitor, agonist, antagonist)?
@@ -158,7 +159,8 @@ async def get_explanation(
     db: AsyncSession,
     entity_type: str,
     entity_id: str,
-    question_type: str,
+    entity_name: str = "",
+    question_type: str = "mechanism",
     context: dict | None = None,
 ) -> AIExplainResponse:
     """
@@ -205,6 +207,7 @@ async def get_explanation(
         prompt = build_prompt(
             entity_type=entity_type,
             entity_id=entity_id,
+            entity_name=context.get("entity_name", entity_id),
             question_type=question_type,
             context=context,
         )

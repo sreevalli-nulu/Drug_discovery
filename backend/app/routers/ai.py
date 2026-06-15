@@ -77,10 +77,13 @@ async def explain_entity(
             }
 
     # Call AI service — handles all cache + flag logic internally
+    context["entity_name"] = request.entity_name or request.entity_id
+
     response = await ai_service.get_explanation(
         db=db,
         entity_type=request.entity_type,
         entity_id=request.entity_id,
+        entity_name=request.entity_name or request.entity_id,
         question_type=request.question_type,
         context=context,
     )

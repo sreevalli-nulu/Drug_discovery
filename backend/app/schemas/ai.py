@@ -4,10 +4,10 @@ from typing import Optional
 
 # Frontend sends this to request an AI explanation
 class AIExplainRequest(BaseModel):
-    entity_type: str        # compound / target / disease
-    entity_id: str          # ChEMBL ID, UniProt ID, or EFO ID
-    question_type: str      # mechanism / ic50 / druglike / disease_gene
-
+    entity_type: str
+    entity_id: str
+    entity_name: str = ""   # human-readable name, e.g. "Imatinib"
+    question_type: str
 
 # What gets returned
 class AIExplainResponse(BaseModel):

@@ -4,9 +4,11 @@ import { PageHeader, Card, Badge, EmptyState } from '../components/common';
 import LipinskiPanel from '../components/compound/LipinskiPanel';
 import ActivityChart from '../components/compound/ActivityChart';
 import TargetsTable from '../components/compound/TargetsTable';
+import AIInsightsPanel from '../components/ai/AIInsightsPanel';
 import { useCompoundProfile, useCompoundActivities, useCompoundTargets } from '../hooks/useCompound';
 import { formatMolecularWeight, formatPhase } from '../utils/formatters';
 import './CompoundPage.css';
+import SaveButton from '../components/common/SaveButton';
 
 const CompoundPage = () => {
   const { chemblId } = useParams<{ chemblId: string }>();
@@ -62,16 +64,27 @@ const CompoundPage = () => {
       </button>
 
       <PageHeader
-        title={profile.name}
-        subtitle={
-          profile.smiles
-            ? `SMILES: ${profile.smiles.slice(0, 60)}${profile.smiles.length > 60 ? '…' : ''}`
-            : undefined
-        }
-        badgeLabel="Compound"
-        badgeVariant="compound"
-        monoId={profile.chembl_id}
-        actions={phaseLabel ? <Badge variant={phaseVariant}>{phaseLabel}</Badge> : undefined}
+  title={profile.name}
+  subtitle={
+    profile.smiles
+      ? `SMILES: ${profile.smiles.slice(0, 60)}${profile.smiles.length > 60 ? '…' : ''}`
+      : undefined
+  }
+  badgeLabel="Compound"
+  badgeVariant="compound"
+  monoId={profile.chembl_id}
+  actions={
+    <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+      {phaseLabel && <Badge variant={phaseVariant}>{phaseLabel}</Badge>}
+      <SaveButton entityType="compound" entityId={profile.chembl_id} entityName={profile.name} />
+    </div>
+  }
+/>
+
+      <AIInsightsPanel
+        entityType="compound"
+        entityId={profile.chembl_id}
+        entityName={profile.name}
       />
 
       <div className="compound-page__overview">

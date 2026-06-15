@@ -1,0 +1,46 @@
+.save-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-elevated);
+  color: var(--color-text-secondary);
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.save-btn:hover:not(:disabled) {
+  border-color: color-mix(in srgb, var(--color-cyan) 40%, var(--color-border));
+  color: var(--color-cyan);
+}
+
+.save-btn--saved {
+  border-color: color-mix(in srgb, var(--color-green) 40%, var(--color-border));
+  color: var(--color-green);
+  background: color-mix(in srgb, var(--color-green) 8%, var(--color-bg-elevated));
+}
+
+.save-btn--saved:hover:not(:disabled) {
+  border-color: color-mix(in srgb, var(--color-red, #FF4757) 40%, var(--color-border));
+  color: var(--color-red, #FF4757);
+  background: color-mix(in srgb, var(--color-red, #FF4757) 8%, var(--color-bg-elevated));
+}
+
+.save-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.save-btn__spinner {
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

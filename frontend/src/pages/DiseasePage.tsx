@@ -1,3 +1,4 @@
+import AIInsightsPanel from '../components/ai/AIInsightsPanel';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Activity, ArrowLeft } from 'lucide-react';
 import { PageHeader, Card, Badge, EmptyState } from '../components/common';
@@ -9,6 +10,7 @@ import {
   useDiseaseDrugs,
 } from '../hooks/useDisease';
 import './DiseasePage.css';
+import SaveButton from '../components/common/SaveButton';
 
 const DiseasePage = () => {
   const { efoId } = useParams<{ efoId: string }>();
@@ -67,7 +69,10 @@ const DiseasePage = () => {
         badgeVariant="disease"
         monoId={profile.efo_id}
       />
-
+        actions={
+  <SaveButton entityType="disease" entityId={profile.efo_id} entityName={profile.name} />
+}
+<AIInsightsPanel entityType="disease" entityId={profile.efo_id} entityName={profile.name} />
       {/* Disease Info Card */}
       <Card title="Disease Information" className="disease-page__info-card">
         {profile.description && (

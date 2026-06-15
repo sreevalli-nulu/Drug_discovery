@@ -1,3 +1,4 @@
+import AIInsightsPanel from '../components/ai/AIInsightsPanel';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Dna, ArrowLeft, ExternalLink } from 'lucide-react';
 import { PageHeader, Card, Badge, EmptyState } from '../components/common';
@@ -9,6 +10,7 @@ import {
   useTargetDiseases,
 } from '../hooks/useTarget';
 import './TargetPage.css';
+import SaveButton from '../components/common/SaveButton';
 
 const TargetPage = () => {
   const { targetId } = useParams<{ targetId: string }>();
@@ -84,7 +86,16 @@ const TargetPage = () => {
           </div>
         }
       />
-
+        actions={
+  <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+    <div className="target-page__header-badges">
+      {profile.target_type && <Badge variant="neutral">{profile.target_type}</Badge>}
+      {profile.organism && <Badge variant="neutral">{profile.organism}</Badge>}
+    </div>
+    <SaveButton entityType="target" entityId={profile.target_chembl_id} entityName={profile.pref_name} />
+  </div>
+}
+<AIInsightsPanel entityType="target" entityId={profile.target_chembl_id} entityName={profile.pref_name} />
       {/* Target Info Card */}
       <Card title="Target Information" className="target-page__info-card">
         <div className="target-page__props">

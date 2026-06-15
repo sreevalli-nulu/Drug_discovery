@@ -8,6 +8,7 @@ export type EntityType = 'compound' | 'target' | 'disease';
 export interface AIExplainRequest {
   entity_type: EntityType;
   entity_id: string;
+  entity_name?: string;
   question_type: QuestionType;
 }
 

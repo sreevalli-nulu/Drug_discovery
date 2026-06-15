@@ -4,10 +4,26 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f9831d83-bbb9-44d8-9dfc-d0ecb4ba6a45" name="Changes" comment="add target profile page with ligands table and disease associations">
-      <change afterPath="$PROJECT_DIR$/frontend/src/pages/DiseasePage.css" afterDir="false" />
+    <list default="true" id="f9831d83-bbb9-44d8-9dfc-d0ecb4ba6a45" name="Changes" comment="add disease profile page with genes table and drug pipeline">
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/ai/AIInsightsPanel.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/common/SaveButton.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/common/SaveButton.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/workspace/WorkspaceCard.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/workspace/WorkspaceCard.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/pages/WorkspacePage.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/.env" beforeDir="false" afterPath="$PROJECT_DIR$/backend/.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/app/routers/ai.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/routers/ai.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/app/schemas/ai.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/schemas/ai.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/app/services/ai_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app/services/ai_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/api/ai.api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/api/ai.api.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/ai/AIInsightsPanel.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/ai/AIInsightsPanel.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/common/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/common/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/CompoundPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/CompoundPage.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/pages/DiseasePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/DiseasePage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/TargetPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/TargetPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/WorkspacePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/WorkspacePage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/types/ai.types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/types/ai.types.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -92,7 +108,7 @@
       <workItem from="1780310104629" duration="25389000" />
       <workItem from="1781158799799" duration="7768000" />
       <workItem from="1781249472682" duration="5012000" />
-      <workItem from="1781256538136" duration="14482000" />
+      <workItem from="1781256538136" duration="20724000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <option name="closed" value="true" />
@@ -150,11 +166,30 @@
       <option name="project" value="LOCAL" />
       <updated>1781337576607</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="add disease profile page with genes table and drug pipeline">
+      <option name="closed" value="true" />
+      <created>1781338545393</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1781338545393</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="initial commit" />
@@ -163,7 +198,8 @@
     <MESSAGE value="add search results page with tabbed compound/target/disease results" />
     <MESSAGE value="add compound profile page with bioactivity chart and Lipinski panel" />
     <MESSAGE value="add target profile page with ligands table and disease associations" />
-    <option name="LAST_COMMIT_MESSAGE" value="add target profile page with ligands table and disease associations" />
+    <MESSAGE value="add disease profile page with genes table and drug pipeline" />
+    <option name="LAST_COMMIT_MESSAGE" value="add disease profile page with genes table and drug pipeline" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

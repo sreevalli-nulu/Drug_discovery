@@ -1,0 +1,104 @@
+.workspace-page {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 0 64px 0;
+}
+
+.workspace-page__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+
+.workspace-page__header-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.workspace-page__title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.workspace-page__title svg {
+  color: var(--color-cyan);
+}
+
+.workspace-page__count {
+  font-size: 0.82rem;
+  color: var(--color-text-secondary);
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  padding: 3px 12px;
+  font-family: var(--font-display);
+}
+
+.workspace-page__export-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-elevated);
+  color: var(--color-text-secondary);
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.workspace-page__export-btn:hover {
+  color: var(--color-cyan);
+  border-color: color-mix(in srgb, var(--color-cyan) 40%, var(--color-border));
+}
+
+/* Grid of workspace cards */
+.workspace-page__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+/* Skeleton loading */
+.workspace-page__skeletons {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+.workspace-page__skeleton {
+  height: 140px;
+  border-radius: 12px;
+  background: var(--color-bg-elevated);
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0%   { opacity: 0.5; }
+  50%  { opacity: 1; }
+  100% { opacity: 0.5; }
+}
+
+@media (max-width: 640px) {
+  .workspace-page__grid,
+  .workspace-page__skeletons {
+    grid-template-columns: 1fr;
+  }
+  .workspace-page__title {
+    font-size: 1.3rem;
+  }
+}
