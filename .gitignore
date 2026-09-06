@@ -3,3 +3,6 @@ node_modules/
 .vite/
 .env*
 *.local
+# Environment files
+backend/.env
+frontend/.env
